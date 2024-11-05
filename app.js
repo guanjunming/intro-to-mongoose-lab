@@ -1,10 +1,10 @@
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv").config();
 const mongoose = require("mongoose");
 const prompt = require("prompt-sync")();
-const Customer = require("./models/Customer");
+const Customer = require("./src/models/Customer");
+const connectDB = require("./src/db/db");
 
-mongoose.connect(process.env.MONGODB_URI);
+connectDB();
 
 const main = async () => {
   console.log("Welcome to the CRM");
