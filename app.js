@@ -44,56 +44,75 @@ const main = async () => {
 };
 
 const createCustomer = async () => {
-  const name = prompt("Enter the customer's name: ");
-  const age = prompt("Enter the customer's age: ");
+  try {
+    const name = prompt("Enter the customer's name: ");
+    const age = prompt("Enter the customer's age: ");
 
-  const customer = await Customer.create({ name, age });
-  console.log("Customer created: ", customer);
+    const customer = await Customer.create({ name, age });
+    console.log("Customer created: ", customer);
+  } catch (error) {
+    console.error(error.message);
+    console.log("Invalid inputs, please try again.");
+  }
 };
 
 const viewCustomers = async () => {
-  console.log("Below is the list of customers: \n");
+  try {
+    console.log("Below is the list of customers: \n");
 
-  const customers = await Customer.find();
-  customers.forEach((customer) =>
-    console.log(
-      `id: ${customer._id} -- Name: ${customer.name}, Age: ${customer.age}`
-    )
-  );
+    const customers = await Customer.find();
+    customers.forEach((customer) =>
+      console.log(
+        `id: ${customer._id} -- Name: ${customer.name}, Age: ${customer.age}`
+      )
+    );
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 const updateCustomer = async () => {
-  await viewCustomers();
+  try {
+    await viewCustomers();
 
-  const id = prompt(
-    "\nCopy and paste the id of the customer you would like to update here: "
-  );
-  const customer = await Customer.findById(id);
-  if (customer) {
-    const newName = prompt("What is the customer's new name? ");
-    const newAge = parseInt(prompt("What is the customer's new age? "), 10);
+    const id = prompt(
+      "\nEnter the id of the customer you would like to update: "
+    );
+    const customer = await Customer.findById(id);
+    if (customer) {
+      const newName = prompt("What is the customer's new name? ");
+      const newAge = parseInt(prompt("What is the customer's new age? "), 10);
 
-    customer.name = newName;
-    customer.age = newAge;
-    await customer.save();
+      customer.name = newName;
+      customer.age = newAge;
+      await customer.save();
 
-    console.log("Customer updated: ", customer);
-  } else {
-    console.log("Customer not found.");
+      console.log("Customer updated: ", customer);
+    } else {
+      console.log("Customer not found.");
+    }
+  } catch (error) {
+    console.error(error.message);
+    console.log("Invalid customer id or inputs, please try again.");
   }
 };
 
 const deleteCustomer = async () => {
-  await viewCustomers();
+  try {
+    await viewCustomers();
 
-  const id = prompt(
-    "\nCopy and paste the id of the customer you would like to delete here: "
-  );
-  const customer = await Customer.findByIdAndDelete(id);
-  if (customer) {
-    console.log("Customer deleted: ", customer);
-  } else {
-    console.log("Customer not found.");
+    const id = prompt(
+      "\nEnter the id of the customer you would like to delete: "
+    );
+    const customer = await Customer.findByIdAndDelete(id);
+    if (customer) {
+      console.log("Customer deleted: ", customer);
+    } else {
+      console.log("Customer not found.");
+    }
+  } catch (error) {
+    console.error(error.message);
+    console.log("Invalid customer id, please try again.");
   }
 };
 
